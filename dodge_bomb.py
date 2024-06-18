@@ -47,6 +47,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
 def kk_radian() -> dict:
     """
     戻り値：辞書
+    こうかとんの画像の向き設定
     """
     RADIAN = {
         (0, 0): 0,
