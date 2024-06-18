@@ -1,16 +1,18 @@
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 
-WIDTH, HEIGHT = 1600, 900
+WIDTH, HEIGHT = 1300, 800
 DELTA = {  # 移動用辞書
     pg.K_UP: (0, -5),
     pg.K_DOWN: (0, +5),
     pg.K_LEFT: (-5, 0),
     pg.K_RIGHT: (+5, 0),
 }
+
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -26,6 +28,21 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     if rct.top < 0 or HEIGHT < rct.bottom: # 縦方向判定
         tate = False
     return yoko, tate
+
+
+def kk_radian() -> dict:
+    RADIAN = {
+        (0, 0): 0,
+        (-5, 0): 0,
+        (-5, +5): 45,
+        (0, +5): 90,
+        (+5, +5): 45,
+        (+5, 0): 0,
+        (+5, -5): -45,
+        (0, -5): -90,
+        (-5, -5): -45,       
+    }
+    return RADIAN
 
 
 def main():
@@ -61,6 +78,9 @@ def main():
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
              kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+        kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), kk_radian()[(sum_mv[0], sum_mv[1])], 2.0)
+        if sum_mv[0] >= 0:
+            kk_img = pg.transform.flip(kk_img, True, False)
         screen.blit(kk_img, kk_rct)
 
         bb_rct.move_ip(vx, vy)
