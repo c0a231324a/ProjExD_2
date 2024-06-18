@@ -16,6 +16,20 @@ DELTA = {  # 移動用辞書
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
+def bb_accs() -> tuple:
+    accs = [a for a in range(1, 11)]
+    return (accs)
+
+    
+def bb_imgs() -> tuple:
+    imgs = []
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r))
+        imgs.append(bb_img)
+    return (imgs)
+
+
 def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     """
     引数：こうかとんRectかばくだんRect
@@ -31,6 +45,9 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
 
 
 def kk_radian() -> dict:
+    """
+    戻り値：辞書
+    """
     RADIAN = {
         (0, 0): 0,
         (-5, 0): 0,
@@ -79,8 +96,8 @@ def main():
         if check_bound(kk_rct) != (True, True):
              kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), kk_radian()[(sum_mv[0], sum_mv[1])], 2.0)
-        if sum_mv[0] >= 0:
-            kk_img = pg.transform.flip(kk_img, True, False)
+        if sum_mv[0] >= 0:  #こうかとんがｘ軸マイナスに動いてなければ
+            kk_img = pg.transform.flip(kk_img, True, False)  #こうかとんを左右反転
         screen.blit(kk_img, kk_rct)
 
         bb_rct.move_ip(vx, vy)
@@ -90,6 +107,7 @@ def main():
         if not tate:
             vy *= -1
         screen.blit(bb_img, bb_rct)
+
         pg.display.update()
         tmr += 1
         clock.tick(50)
